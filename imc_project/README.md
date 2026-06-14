@@ -1,60 +1,43 @@
-# Calculadora de IMC — Django
+# Calculadora de IMC
 
-Aplicación web con Django para calcular el Índice de Masa Corporal (IMC).
+**Asignatura:** Programación en Python  
+**Estudiante:** Angel Reynaldo Lopez Lopez
+**Universidad:** Universidad Tecnológica de Honduras  
 
-## Requisitos
-- Python 3.8+
-- Django 4.x (`pip install django`)
+---
 
-## Instalación y ejecución
+## Descripción
+
+Aplicación web desarrollada con **Python y Django** que calcula el Índice de Masa Corporal (IMC) de una persona y lo clasifica según rangos de peso saludable.
+
+## Funcionalidades
+
+- Ingreso de peso en kilogramos y altura en metros
+- Cálculo del IMC con fórmula implementada manualmente
+- Clasificación del resultado en 4 categorías
+- Validación de entradas (valores no numéricos o negativos)
+- Botón para limpiar los campos
+
+## Clasificación del IMC
+
+| Rango | Categoría |
+|-------|-----------|
+| Menor a 18.5 | Bajo peso |
+| 18.5 – 24.9 | Peso normal |
+| 25 – 29.9 | Sobrepeso |
+| 30 o más | Obesidad |
+
+## Tecnologías utilizadas
+
+- Python 3
+- Django 6
+- HTML / CSS
+
+## Instrucciones para ejecutar
 
 ```bash
-# 1. Clonar / descomprimir el proyecto
-cd imc_project
-
-# 2. Instalar dependencia
 pip install django
-
-# 3. Ejecutar el servidor
 python manage.py runserver
-
-# 4. Abrir en el navegador
-http://127.0.0.1:8000/
 ```
 
-## Estructura del proyecto
-
-```
-imc_project/
-├── calculadora/
-│   ├── templates/calculadora/
-│   │   └── index.html       ← Interfaz de usuario
-│   ├── views.py             ← Lógica de cálculo y validación
-│   └── urls.py              ← Rutas de la app
-├── imc_project/
-│   ├── settings.py
-│   └── urls.py
-└── manage.py
-```
-
-## Fórmula implementada
-
-```
-IMC = peso / (altura × altura)
-```
-
-Implementada manualmente en `views.py`, sin librerías externas.
-
-## Clasificación
-
-| Rango IMC    | Categoría    |
-|--------------|--------------|
-| < 18.5       | Bajo peso    |
-| 18.5 – 24.9  | Peso normal  |
-| 25 – 29.9    | Sobrepeso    |
-| ≥ 30         | Obesidad     |
-
-## Validaciones
-
-- Peso y altura deben ser números positivos
-- Mensajes de error para valores no numéricos o negativos
+Luego abrir en el navegador: `http://127.0.0.1:8000/`
