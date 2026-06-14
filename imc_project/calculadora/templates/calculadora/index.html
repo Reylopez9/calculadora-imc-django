@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.08);
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Quitar flechas del input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-calcular {
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            color: #ffffff;
+        }
+
+        .btn-limpiar {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Errores */
+        .errores {
+            background: rgba(244, 67, 54, 0.15);
+            border: 1px solid rgba(244, 67, 54, 0.4);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+        }
+
+        .errores p {
+            color: #ef9a9a;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .errores p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Resultado */
+        .resultado {
+            margin-top: 28px;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado .imc-valor {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .resultado .imc-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        .resultado .categoria {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* Colores por categoría */
+        .bajo-peso {
+            background: rgba(41, 182, 246, 0.15);
+            border: 1px solid rgba(41, 182, 246, 0.4);
+            color: #81d4fa;
+        }
+
+        .peso-normal {
+            background: rgba(102, 187, 106, 0.15);
+            border: 1px solid rgba(102, 187, 106, 0.4);
+            color: #a5d6a7;
+        }
+
+        .sobrepeso {
+            background: rgba(255, 183, 77, 0.15);
+            border: 1px solid rgba(255, 183, 77, 0.4);
+            color: #ffe082;
+        }
+
+        .obesidad {
+            background: rgba(239, 83, 80, 0.15);
+            border: 1px solid rgba(239, 83, 80, 0.4);
+            color: #ef9a9a;
+        }
+
+        /* Tabla de referencia */
+        .tabla-referencia {
+            margin-top: 28px;
+        }
+
+        .tabla-referencia h3 {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .tabla-referencia table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .tabla-referencia td {
+            padding: 8px 12px;
+            color: rgba(255,255,255,0.6);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .tabla-referencia td:last-child {
+            text-align: right;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .tabla-referencia tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">⚖️</div>
+            <h1>Calculadora de IMC</h1>
+            <p>Índice de Masa Corporal</p>
+        </div>
+
+        <!-- Mensajes de error -->
+        {% if errores %}
+        <div class="errores">
+            {% for error in errores %}
+            <p>⚠ {{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="peso">Peso (kg)</label>
+                <input
+                    type="number"
+                    id="peso"
+                    name="peso"
+                    placeholder="Ej: 70.5"
+                    step="0.1"
+                    min="0"
+                    value="{{ peso }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="altura">Altura (m)</label>
+                <input
+                    type="number"
+                    id="altura"
+                    name="altura"
+                    placeholder="Ej: 1.75"
+                    step="0.01"
+                    min="0"
+                    value="{{ altura }}"
+                    required
+                >
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-calcular">Calcular IMC</button>
+                <button type="button" class="btn btn-limpiar" onclick="limpiarCampos()">Limpiar</button>
+            </div>
+        </form>
+
+        <!-- Resultado -->
+        {% if imc %}
+        <div class="resultado {{ color_clase }}">
+            <div class="imc-label">Tu IMC es</div>
+            <div class="imc-valor">{{ imc }}</div>
+            <div class="categoria">{{ categoria }}</div>
+        </div>
+        {% endif %}
+
+        <!-- Tabla de referencia -->
+        <div class="tabla-referencia">
+            <h3>Referencia</h3>
+            <table>
+                <tr><td>🔵 Bajo peso</td><td>Menor a 18.5</td></tr>
+                <tr><td>🟢 Peso normal</td><td>18.5 – 24.9</td></tr>
+                <tr><td>🟡 Sobrepeso</td><td>25 – 29.9</td></tr>
+                <tr><td>🔴 Obesidad</td><td>30 o más</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function limpiarCampos() {
+            document.getElementById('peso').value = '';
+            document.getElementById('altura').value = '';
+            // Redirigir a GET para limpiar resultado también
+            window.location.href = window.location.pathname;
+        }
+    </script>
+</body>
+</html>
