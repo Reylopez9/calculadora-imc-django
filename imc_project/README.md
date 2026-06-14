@@ -41,3 +41,7 @@ python manage.py runserver
 ```
 
 Luego abrir en el navegador: `http://127.0.0.1:8000/`
+
+## Video Explicativo
+
+https://www.youtube.com/watch?v=bspthDasbtw
